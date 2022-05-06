@@ -3,7 +3,7 @@
 ![pypi](https://img.shields.io/pypi/v/sqlalchemy-databricks.svg)
 ![pyversions](https://img.shields.io/pypi/pyversions/sqlalchemy-databricks.svg)
 
-A SQLAlchemy Dialect for Databricks using the officially supported ``databricks-sql-connector`` dbapi. Compatible with workspace and sql analytics clusters. (Thanks to [@Tom-Newton](https://github.com/Tom-Newton) for pointing this out)
+A SQLAlchemy Dialect for Databricks workspace and sql analytics clusters using the officially supported [databricks-sql-connector](https://pypi.org/project/databricks-sql-connector/) dbapi.
 
 ## Installation
 
@@ -23,8 +23,10 @@ from sqlalchemy.engine import create_engine
 
 
 engine = create_engine(
-    "databricks+connector://token:<databricks_token>@<databricks_host>:443/default",
-    connect_args={"http_path": "<cluster_http_path>"}
+    "databricks+connector://token:<databricks_token>@<databricks_host>:443/<database_or_schema_name>",
+    connect_args={
+        "http_path": "<cluster_http_path>",
+    },
 )
 
 logs = Table("my_table", MetaData(bind=engine), autoload=True)

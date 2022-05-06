@@ -13,9 +13,6 @@ classifiers = [
     "License :: OSI Approved :: MIT License",
     "Natural Language :: English",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.7",
-    "Programming Language :: Python :: 3.8",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: Implementation :: CPython",
     "Topic :: Database",
     "Topic :: Database :: Front-Ends",
@@ -29,16 +26,16 @@ include = [
 "databricks.connector" = "sqlalchemy_databricks:DatabricksDialect"
 
 [tool.poetry.dependencies]
-python = "^3.7"
-databricks-sql-connector = "^0"
+python = "^3.8"
+databricks-sql-connector = "^2"
 SQLAlchemy = "^1"
 PyHive = "^0"
 
 [tool.poetry.dev-dependencies]
 python-dotenv = "^0.19.2"
 pytest = "^6.2.5"
-black = "^21.12b0"
 isort = "^5.10.1"
+black = "^22.3.0"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
@@ -73,4 +70,4 @@ multi_line_output = 3
 include_trailing_comma = true
 force_grid_wrap = 0
 use_parentheses = true
-line_length = 120
+line_length = 88

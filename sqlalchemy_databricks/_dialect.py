@@ -17,16 +17,14 @@ class DatabricksDialect(HiveDialect):
 
     def create_connect_args(self, url):
         # databricks-sql-connector expects just
-        # server_hostname, access_token, and http_path
+        # server_hostname, access_token, and http_path.
+        # schema is extracted from the database in the url
+        # http_path is passed as a connect arg outside this method
         kwargs = {
             "server_hostname": url.host,
             "access_token": url.password,
+            "schema": url.database or "default",
         }
-
-        if url.query is not None and "http_path" in url.query:
-            kwargs["http_path"] = url.query["http_path"]
-
-        kwargs.update(url.query)
         return [], kwargs
 
     def get_table_names(self, connection, schema=None, **kw):
@@ -37,7 +35,7 @@ class DatabricksDialect(HiveDialect):
         return [row[1] for row in connection.execute(query)]
 
     def get_columns(self, connection, table_name, schema=None, **kw):
-        # override to get columns properly; the reason is because databricks
+        # override to get columns properly; the reason is that databricks
         # presents the partition information differently from oss hive
         rows = self._get_table_columns(connection, table_name, schema)
         # Strip whitespace

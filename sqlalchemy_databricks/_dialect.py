@@ -10,6 +10,7 @@ from sqlalchemy import util
 class DatabricksDialect(HiveDialect):
     name = "databricks"
     driver = "connector"  # databricks-sql-connector
+    supports_statement_cache = False  # can this be True?
 
     @classmethod
     def dbapi(cls):

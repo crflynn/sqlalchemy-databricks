@@ -1,4 +1,3 @@
-from packaging.version import Version
 import re
 
 from databricks import sql
@@ -9,7 +8,6 @@ from sqlalchemy import exc
 from sqlalchemy import types
 from sqlalchemy import util
 
-sa_version = Version(sqlalchemy.__version__)
 
 try:
     import alembic

@@ -7,6 +7,7 @@ import sqlalchemy
 from sqlalchemy import exc
 from sqlalchemy import types
 from sqlalchemy import util
+from sqlalchemy.sql import compiler
 
 
 try:
@@ -90,3 +91,10 @@ class DatabricksDialect(HiveDialect):
                 }
             )
         return result
+
+
+class DatabricksDDLCompiler(compiler.DDLCompiler):
+    def visit_primary_key_constraint(self, constraint, **kw):
+        """Override because Databricks doesn't support primary keys"""
+
+        return ''

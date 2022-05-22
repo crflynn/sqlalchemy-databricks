@@ -3,6 +3,7 @@ import re
 from databricks import sql
 from pyhive.sqlalchemy_hive import HiveDialect
 from pyhive.sqlalchemy_hive import _type_map
+from sqlalchemy import exc
 from sqlalchemy import types
 from sqlalchemy import util
 
@@ -34,6 +35,14 @@ class DatabricksDialect(HiveDialect):
         if schema:
             query += " IN " + self.identifier_preparer.quote_identifier(schema)
         return [row[1] for row in connection.execute(query)]
+
+    def has_table(self, connection, table_name, schema=None):
+        # override because Databricks raises a different error when no table exists
+        try:
+            self._get_table_columns(connection, table_name, schema)
+            return True
+        except exc.DatabaseError:
+            return False
 
     def get_columns(self, connection, table_name, schema=None, **kw):
         # override to get columns properly; the reason is that databricks

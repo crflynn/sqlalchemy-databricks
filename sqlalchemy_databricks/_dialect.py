@@ -1,11 +1,25 @@
+from packaging.version import Version
 import re
 
 from databricks import sql
 from pyhive.sqlalchemy_hive import HiveDialect
 from pyhive.sqlalchemy_hive import _type_map
+import sqlalchemy
 from sqlalchemy import exc
 from sqlalchemy import types
 from sqlalchemy import util
+
+sa_version = Version(sqlalchemy.__version__)
+
+try:
+    import alembic
+except ImportError:
+    pass
+else:
+    from alembic.ddl import DefaultImpl
+
+    class DatabricksImpl(DefaultImpl):
+        __dialect__ = 'databricks'
 
 
 class DatabricksDialect(HiveDialect):

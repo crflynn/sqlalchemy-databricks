@@ -21,10 +21,19 @@ else:
         __dialect__ = 'databricks'
 
 
+class DatabricksDDLCompiler(compiler.DDLCompiler):
+    def visit_primary_key_constraint(self, constraint, **kw):
+        """Override because Databricks doesn't support primary keys"""
+
+        return ''
+
+
 class DatabricksDialect(HiveDialect):
     name = "databricks"
     driver = "connector"  # databricks-sql-connector
     supports_statement_cache = False  # can this be True?
+
+    ddl_compiler = DatabricksDDLCompiler
 
     @classmethod
     def dbapi(cls):
@@ -91,10 +100,3 @@ class DatabricksDialect(HiveDialect):
                 }
             )
         return result
-
-
-class DatabricksDDLCompiler(compiler.DDLCompiler):
-    def visit_primary_key_constraint(self, constraint, **kw):
-        """Override because Databricks doesn't support primary keys"""
-
-        return ''

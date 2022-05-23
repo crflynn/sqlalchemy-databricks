@@ -59,7 +59,7 @@ class DatabricksDialect(HiveDialect):
         return [row[1] for row in connection.execute(query)]
 
     def has_table(self, connection, table_name, schema=None):
-        # override because Databricks raises a different error when no table exists
+        """override because Databricks raises a different error when no table exists"""
         try:
             self._get_table_columns(connection, table_name, schema)
             return True

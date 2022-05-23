@@ -3,7 +3,6 @@ import re
 from databricks import sql
 from pyhive.sqlalchemy_hive import HiveDialect
 from pyhive.sqlalchemy_hive import _type_map
-import sqlalchemy
 from sqlalchemy import exc
 from sqlalchemy import types
 from sqlalchemy import util

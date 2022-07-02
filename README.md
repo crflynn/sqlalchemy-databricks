@@ -32,3 +32,11 @@ engine = create_engine(
 logs = Table("my_table", MetaData(bind=engine), autoload=True)
 print(select([func.count("*")], from_obj=logs).scalar())
 ```
+
+In the above example:
+
+* `databricks_host` is the Databricks instance host name.
+* `cluster_http_path` is the HTTP Path from your [Connection Details](https://docs.databricks.com/integrations/bi/jdbc-odbc-bi.html#get-connection-details-for-a-sql-warehouse) screen:
+    - For a Databricks SQL Warehouse the format is `/sql/1.0/endpoints/***************`
+    - For a Databricks Runtime interactive cluster the format is `/sql/protocolv1/o/**************/****-*******-*******`
+* `databricks_token` is the Databricks [Personal Access Token](https://docs.databricks.com/dev-tools/api/latest/authentication.html#token-management) for the account that will execute commands and queries

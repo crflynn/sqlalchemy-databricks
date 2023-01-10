@@ -11,7 +11,9 @@ from sqlalchemy.sql import compiler
 
 try:
     import alembic
+    import alembic.ddl
 except ImportError:
+    # No alembic library is acceptable
     pass
 else:
     from alembic.ddl import DefaultImpl

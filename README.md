@@ -1,3 +1,18 @@
+# ⚠️ This project is archived. A new SQLAlchemy dialect is available directly from Databricks
+
+Databricks now maintain a SQLAlchemy dialect in the https://github.com/databricks/databricks-sql-python repository.  You can install it with `pip install databricks-sql-python`. This new dialect was introduced in `databricks-sql-python==2.4.0`. 
+
+The SQLAlchemy URI format for this connector is:
+
+```
+databricks://token:dapi***@***.cloud.databricks.com?http_path=/sql/***
+```
+
+There is a self-contained usage example available in the `examples` directory of that repository.
+
+Please direct any issues / pull requests to that repository and Databricks support. 
+
+
 # sqlalchemy-databricks
 
 ![pypi](https://img.shields.io/pypi/v/sqlalchemy-databricks.svg)

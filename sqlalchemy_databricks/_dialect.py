@@ -3,14 +3,38 @@ import re
 from databricks import sql
 from pyhive.sqlalchemy_hive import HiveDialect
 from pyhive.sqlalchemy_hive import _type_map
+from sqlalchemy import exc
 from sqlalchemy import types
 from sqlalchemy import util
+from sqlalchemy.sql import compiler
+
+
+try:
+    import alembic
+    import alembic.ddl
+except ImportError:
+    # No alembic library is acceptable
+    pass
+else:
+    from alembic.ddl import DefaultImpl
+
+    class DatabricksImpl(DefaultImpl):
+        __dialect__ = 'databricks'
+
+
+class DatabricksDDLCompiler(compiler.DDLCompiler):
+    def visit_primary_key_constraint(self, constraint, **kw):
+        """Override because Databricks doesn't support primary keys"""
+
+        return ''
 
 
 class DatabricksDialect(HiveDialect):
     name = "databricks"
     driver = "connector"  # databricks-sql-connector
     supports_statement_cache = False  # can this be True?
+
+    ddl_compiler = DatabricksDDLCompiler
 
     @classmethod
     def dbapi(cls):
@@ -34,6 +58,14 @@ class DatabricksDialect(HiveDialect):
         if schema:
             query += " IN " + self.identifier_preparer.quote_identifier(schema)
         return [row[1] for row in connection.execute(query)]
+
+    def has_table(self, connection, table_name, schema=None):
+        """override because Databricks raises a different error when no table exists"""
+        try:
+            self._get_table_columns(connection, table_name, schema)
+            return True
+        except exc.DatabaseError:
+            return False
 
     def get_columns(self, connection, table_name, schema=None, **kw):
         # override to get columns properly; the reason is that databricks

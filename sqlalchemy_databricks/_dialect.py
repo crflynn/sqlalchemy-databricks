@@ -5,12 +5,14 @@ from pyhive.sqlalchemy_hive import HiveDialect
 from pyhive.sqlalchemy_hive import _type_map
 from sqlalchemy import types
 from sqlalchemy import util
+from sqlalchemy_databricks._type import DatabricksTypeCompiler
 
 
 class DatabricksDialect(HiveDialect):
     name = "databricks"
     driver = "connector"  # databricks-sql-connector
     supports_statement_cache = False  # can this be True?
+    type_compiler = DatabricksTypeCompiler
 
     @classmethod
     def dbapi(cls):
